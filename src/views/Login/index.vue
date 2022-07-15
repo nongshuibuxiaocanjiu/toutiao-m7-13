@@ -67,7 +67,7 @@ export default {
         const res = await login(this.mobile, this.code)
         // console.log(res)
         this.$store.commit('setUser', res.data.data)
-        this.$router.push('/')
+        this.$router.push('/profile')
         this.$toast.success('登录成功')
       } catch (e) {
         const status = e.response.status

@@ -32,27 +32,13 @@
           />
           <div slot="title" class="user-name">{{ article.aut_name }}</div>
           <div slot="label" class="publish-date">{{ article.pubdate }}</div>
-          <van-button
-            class="follow-btn"
-            round
-            size="small"
-            v-if="article.is_followed"
-            @click="onFollow"
-            loading:followLoading
-            >已关注</van-button
-          >
-          <van-button
-            v-else
-            class="follow-btn"
-            type="info"
-            color="#3296fa"
-            round
-            size="small"
-            icon="plus"
-            @click="onFollow"
-            loading:followLoading
-            >关注</van-button
-          >
+          <!-- 关注用户 -->
+          <FollowUser
+            :is_followed="article.is_followed"
+            :user_id="article.aut_id"
+            @update-follow="article.is_followed = $event"
+          ></FollowUser>
+          <!-- /关注用户 -->
         </van-cell>
         <!-- /用户信息 -->
 
@@ -62,6 +48,30 @@
           v-html="article.content"
         ></div>
         <van-divider>正文结束</van-divider>
+        <!-- 底部区域 -->
+        <div class="article-bottom">
+          <van-button class="comment-btn" type="default" round size="small"
+            >写评论</van-button
+          >
+          <van-icon name="comment-o" info="123" color="#777" />
+          <!-- 收藏 ---------------->
+          <CollectArticle
+            v-model="article.is_collected"
+            :articleId="article.art_id"
+          />
+
+          <!-- /收藏 -->
+          <!-- 点赞---------- -->
+          <likeArticle
+            class="likeArticle"
+            v-model="article.attitude"
+            :articleId="article.art_id"
+          />
+          <!-- /点赞 -->
+
+          <van-icon name="share" color="#777777"></van-icon>
+        </div>
+        <!-- /底部区域 -->
       </div>
       <!-- /加载完成-文章详情 -->
 
@@ -82,27 +92,22 @@
       </div>
       <!-- /加载失败：其它未知错误（例如网络原因或服务端异常） -->
     </div>
-
-    <!-- 底部区域 -->
-    <div class="article-bottom">
-      <van-button class="comment-btn" type="default" round size="small"
-        >写评论</van-button
-      >
-      <van-icon name="comment-o" info="123" color="#777" />
-      <van-icon color="#777" name="star-o" />
-      <van-icon color="#777" name="good-job-o" />
-      <van-icon name="share" color="#777777"></van-icon>
-    </div>
-    <!-- /底部区域 -->
   </div>
 </template>
 
 <script>
 import { getArticleById } from '@/api/article'
 import { addFollow, deleteFollow } from '@/api/user'
+import FollowUser from '@/components/FollowUser.vue'
+import CollectArticle from '@/components/CollectArticle.vue'
+import likeArticle from '@/components/lickArticle.vue'
 export default {
   name: 'ArticleIndex',
-  components: {},
+  components: {
+    FollowUser,
+    CollectArticle,
+    likeArticle
+  },
   props: {
     articleId: {
       type: [Number, String],
@@ -113,8 +118,8 @@ export default {
     return {
       article: {}, // 文章详情
       loading: true, // 加载状态
-      errStatus: 0, // 失败状态码
-      followLoading: false
+      errStatus: 0 // 失败状态码
+      // followLoading: false
     }
   },
   computed: {},
@@ -284,6 +289,9 @@ export default {
         background-color: #e22829;
       }
     }
+  }
+  /deep/.likeArticle {
+    z-index: 999;
   }
 }
 </style>

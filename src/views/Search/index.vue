@@ -32,6 +32,7 @@ import SearchSuggestion from './commponents/SearchSuggestion.vue'
 import SearchResult from './commponents/SearchResult.vue'
 import SearchHistory from './commponents/SearchHistory.vue'
 // import { get, set } from '@/utils/storage'
+import { gethistory, sethistory } from '@/utils'
 
 export default {
   name: 'search-index',
@@ -44,7 +45,7 @@ export default {
     return {
       keywords: '',
       isShowSearchResults: false,
-      searchHistories: this.$store.state.history
+      searchHistories: gethistory() || []
     }
   },
   computed: {
@@ -82,7 +83,7 @@ export default {
   watch: {
     searchHistories (val) {
       // 同步到本地存储
-      this.$store.commit('sethis', val)
+      sethistory(val)
     }
   }
 }

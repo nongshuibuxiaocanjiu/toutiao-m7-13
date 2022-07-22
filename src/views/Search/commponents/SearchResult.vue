@@ -43,8 +43,18 @@ export default {
           q: this.keywords
         })
         console.log(data)
+        console.log(this.keywords)
         const { results } = data.data
         this.list.push(...results)
+        // 3. 设置加载状态结束
+        this.loading = false
+
+        // 4. 判断数据是否加载完毕
+        if (results.length) {
+          this.page++ // 更新获取下一页数据的页码
+        } else {
+          this.finished = true
+        }
       } catch (err) {}
     }
   },

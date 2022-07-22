@@ -38,6 +38,7 @@
             size="small"
             v-if="article.is_followed"
             @click="onFollow"
+            loading:followLoading
             >已关注</van-button
           >
           <van-button
@@ -49,6 +50,7 @@
             size="small"
             icon="plus"
             @click="onFollow"
+            loading:followLoading
             >关注</van-button
           >
         </van-cell>
@@ -111,7 +113,8 @@ export default {
     return {
       article: {}, // 文章详情
       loading: true, // 加载状态
-      errStatus: 0 // 失败状态码
+      errStatus: 0, // 失败状态码
+      followLoading: false
     }
   },
   computed: {},
@@ -122,6 +125,8 @@ export default {
   mounted () {},
   methods: {
     async getArticleById () {
+      this.followLoading = true
+
       this.loading = true
       try {
         const { data } = await getArticleById(this.articleId)
@@ -150,6 +155,8 @@ export default {
         }
         this.$toast(message)
       }
+      this.loading = false
+      this.followLoading = false
     }
   }
 }

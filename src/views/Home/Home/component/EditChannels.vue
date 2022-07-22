@@ -59,7 +59,7 @@ export default {
   name: 'editChannels',
   data () {
     return {
-      isShow: true, // 弹出层
+      isShow: false, // 弹出层
       allChannels: [],
       isEdit: false
     }
@@ -76,7 +76,7 @@ export default {
   methods: {
     async getAllChannels () {
       const { data } = await getAllChannels()
-      console.log(data)
+      // console.log(data)
       this.allChannels = data.data.channels
     },
     onClickMyChannel (channel, index) {

@@ -7,11 +7,16 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: getToken() || {}
+    // history: gethistory()
   },
   mutations: {
     setUser (state, payload) {
       state.user = payload
       setToken(payload)
     }
+    // sethis (state, payload) {
+    //   state.history.push(payload)
+    //   sethistory(state.history)
+    // }
   }
 })

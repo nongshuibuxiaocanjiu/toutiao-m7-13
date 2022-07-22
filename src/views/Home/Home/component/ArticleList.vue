@@ -53,7 +53,7 @@ export default {
     async getArticleList () {
       try {
         const { data } = await getArticleList(this.id, +new Date())
-        console.log(data)
+        // console.log(data)
         this.pre_timestamp = data.data.pre_timestamp
         this.articles = data.data.results
       } catch (err) {

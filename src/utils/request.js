@@ -19,7 +19,7 @@ request.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
-    console.log(config)
+    // console.log(config)
     return config
   },
   // 请求错误的时候,处理的方法

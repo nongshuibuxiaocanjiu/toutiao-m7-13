@@ -4,12 +4,14 @@
       v-if="articleInfo.cover.type === 0"
       :title="articleInfo.title"
       :label="articleDesc"
+      :to="'/article/' + articleInfo.art_id"
     />
 
     <van-cell
       v-if="articleInfo.cover.type === 1"
       :title="articleInfo.title"
       :label="articleDesc"
+      :to="'/article/' + articleInfo.art_id"
     >
       <van-image
         width="3rem"
@@ -18,7 +20,11 @@
       />
     </van-cell>
 
-    <van-cell v-if="articleInfo.cover.type === 3" :title="articleInfo.title">
+    <van-cell
+      v-if="articleInfo.cover.type === 3"
+      :title="articleInfo.title"
+      :to="'/article/' + articleInfo.art_id"
+    >
       <template #label>
         <div>
           <van-image

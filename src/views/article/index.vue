@@ -48,12 +48,49 @@
           v-html="article.content"
         ></div>
         <van-divider>正文结束</van-divider>
+
+        <!-- 文章评论 -->
+        <articleComments
+          @click-reply="onReplyShow"
+          :articleId="article.art_id"
+          :list="commentList"
+          @onload-success="totalCommentCount = $event.total_count"
+        ></articleComments>
+        <!-- /文章评论 -->
+
         <!-- 底部区域 -->
         <div class="article-bottom">
-          <van-button class="comment-btn" type="default" round size="small"
+          <van-button
+            class="comment-btn"
+            type="default"
+            round
+            size="small"
+            @click="isPostShow = true"
             >写评论</van-button
           >
-          <van-icon name="comment-o" info="123" color="#777" />
+          <!-- 评论 -->
+          <van-popup v-model="isPostShow" position="bottom">
+            <post-comment
+              :target="article.art_id"
+              @onpost-success="onPostSuccess"
+              :commentList="commentList"
+            />
+          </van-popup>
+          <!-- 评论回复 -->
+          <van-popup
+            v-model="isReplyShow"
+            position="bottom"
+            style="height: 85%"
+          >
+            <!-- 回复的回复 -->
+            <articleHuifu
+              :target="article.art_id"
+              :currentComment="currentComment"
+            />
+          </van-popup>
+          <!-- /评论回复 -->
+
+          <van-icon name="comment-o" :info="totalCommentCount" color="#777" />
           <!-- 收藏 ---------------->
           <CollectArticle
             v-model="article.is_collected"
@@ -101,12 +138,18 @@ import { addFollow, deleteFollow } from '@/api/user'
 import FollowUser from '@/components/FollowUser.vue'
 import CollectArticle from '@/components/CollectArticle.vue'
 import likeArticle from '@/components/lickArticle.vue'
+import articleComments from '@/components/article-comment.vue'
+import postComment from '@/components/post-comment.vue'
+import articleHuifu from '@/components/article_huifu.vue'
 export default {
   name: 'ArticleIndex',
   components: {
     FollowUser,
     CollectArticle,
-    likeArticle
+    likeArticle,
+    articleComments,
+    postComment,
+    articleHuifu
   },
   props: {
     articleId: {
@@ -118,14 +161,20 @@ export default {
     return {
       article: {}, // 文章详情
       loading: true, // 加载状态
-      errStatus: 0 // 失败状态码
-      // followLoading: false
+      errStatus: 0, // 失败状态码
+      followLoading: false,
+      totalCommentCount: 0,
+      isPostShow: false,
+      commentList: [], // 评论列表
+      isReplyShow: false,
+      currentComment: {} // 点击回复的那个评论对象
     }
   },
   computed: {},
   watch: {},
   created () {
     this.getArticleById()
+    this.$store.commit('Id', this.articleId)
   },
   mounted () {},
   methods: {
@@ -162,6 +211,16 @@ export default {
       }
       this.loading = false
       this.followLoading = false
+    },
+    onPostSuccess (res) {
+      console.log(res)
+      this.commentList.unshift(res.new_obj)
+      this.isPostShow = false
+    },
+    onReplyShow (item) {
+      console.log(item)
+      this.currentComment = item
+      this.isReplyShow = true
     }
   }
 }

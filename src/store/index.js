@@ -6,17 +6,17 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    user: getToken() || {}
-    // history: gethistory()
+    user: getToken() || {},
+    id: ''
   },
   mutations: {
+    // 设置token
     setUser (state, payload) {
       state.user = payload
       setToken(payload)
+    },
+    Id (state, payload) {
+      state.id = payload
     }
-    // sethis (state, payload) {
-    //   state.history.push(payload)
-    //   sethistory(state.history)
-    // }
   }
 })

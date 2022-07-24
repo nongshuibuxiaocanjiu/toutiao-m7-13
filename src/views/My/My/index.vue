@@ -15,12 +15,12 @@
                 :src="userInfo.photo"
               />
               <!-- 手机号 -->
-              <span class="mobile">{{userInfo.name}}</span>
+              <span class="mobile">{{ userInfo.name }}</span>
             </van-row>
           </van-col>
           <van-col span="11">
             <van-row class="code-row" type="flex" align="center" justify="end">
-              <van-button size="mini" round class="code-btn"
+              <van-button size="mini" round class="code-btn" to="/user/profile"
                 >编辑资料</van-button
               >
             </van-row>
@@ -29,18 +29,18 @@
         <van-row>
           <van-grid class="grid" :border="false">
             <van-grid-item text="头条">
-              <template #icon> {{userInfo.art_count}} </template>
+              <template #icon> {{ userInfo.art_count }} </template>
             </van-grid-item>
             <van-grid-item text="粉丝">
-              <template #icon> {{userInfo.fans_count}} </template>
+              <template #icon> {{ userInfo.fans_count }} </template>
             </van-grid-item>
 
             <van-grid-item text="关注">
-              <template #icon> {{userInfo.follow_count}} </template>
+              <template #icon> {{ userInfo.follow_count }} </template>
             </van-grid-item>
 
             <van-grid-item text="获赞">
-              <template #icon> {{ userInfo.like_count}} </template>
+              <template #icon> {{ userInfo.like_count }} </template>
             </van-grid-item>
           </van-grid>
         </van-row>

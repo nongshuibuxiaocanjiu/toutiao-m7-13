@@ -34,6 +34,10 @@ export default {
     id: {
       type: [String, Number],
       required: true
+    },
+    articles: {
+      type: Array,
+      default: () => []
     }
   },
   components: {
@@ -41,7 +45,7 @@ export default {
   },
   data () {
     return {
-      articles: [],
+      // articles: [],
       pre_timestamp: '',
       loading: false,
       finished: false,

@@ -51,3 +51,24 @@ export const getUserProfile = () => {
     url: '/v1_0/user/profile'
   })
 }
+
+// /v1_0/user/profile
+// 编辑个人资料
+export const updataUserProfile = (data) => {
+  return request({
+    method: 'PATCH',
+    url: '/v1_0/user/profile',
+    data
+  })
+}
+
+// 编辑头像
+// updateUserAvatar
+
+export const updateUserAvatar = (data) => {
+  return request({
+    method: 'PATCH',
+    url: '/v1_0/user/photo',
+    data
+  })
+}

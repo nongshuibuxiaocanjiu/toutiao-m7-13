@@ -26,34 +26,87 @@
       is-link
       @click="isShowUpdateName = true"
     />
-    <van-cell title="性别" :value="user.gender === 0 ? '男' : '女'" is-link />
-    <van-cell title="生日" :value="user.birthday" is-link />
+    <van-cell
+      title="性别"
+      :value="user.gender === 0 ? '男' : '女'"
+      is-link
+      @click="isShowUpdateGender = true"
+    />
+    <van-cell
+      title="生日"
+      :value="user.birthday"
+      is-link
+      @click="isShowUpdateBirthdy = true"
+    />
     <!-- /个人信息 -->
 
     <!-- 编辑昵称 -->
     <van-popup style="height: 85%" v-model="isShowUpdateName" position="bottom">
-      <update-name
-       @close="isShowUpdateName = false"
-       v-model="user.name"
-        />
+      <update-name @close="isShowUpdateName = false" v-model="user.name" />
     </van-popup>
     <!-- /编辑昵称 -->
+
+    <!-- 编辑性别弹层 -->
+    <van-popup v-model="isShowUpdateGender" position="bottom">
+      <update-gender
+        v-if="isShowUpdateGender"
+        v-model="user.gender"
+        @close="isShowUpdateGender = false"
+      />
+    </van-popup>
+    <!-- 编辑昵称弹层 -->
+
+    <!-- 编辑生日弹层 -->
+    <van-popup v-model="isShowUpdateBirthdy" position="bottom">
+      <updateBirthday
+        v-if="isShowUpdateBirthdy"
+        v-model="user.birthday"
+        @close="isShowUpdateBirthdy = false"
+      ></updateBirthday>
+    </van-popup>
+    <!-- 编辑生日弹层 -->
+
+    <!-- 编辑头像弹层 -->
+    <van-popup
+      v-model="isUpdatePhotoShow"
+      style="height: 100%"
+      position="bottom"
+    >
+      <updatePhoto
+        v-if="isUpdatePhotoShow"
+        @close="isUpdatePhotoShow = false"
+        :img="img"
+        @update-photo="user.photo = $event"
+      ></updatePhoto>
+    </van-popup>
+    <!-- 编辑头像弹层 -->
   </div>
 </template>
 
 <script>
 import { getUserProfile } from '@/api/user'
 import updateName from './commpoents/update-name.vue'
+import updateGender from './commpoents/update-gender.vue'
+import updateBirthday from './commpoents/update-birthdy.vue'
+import updatePhoto from './commpoents/update-photo.vue'
+
 export default {
   name: 'UserProfile',
   components: {
-    updateName
+    updateName,
+    updateGender,
+    updateBirthday,
+    updatePhoto
   },
   props: {},
   data () {
     return {
       user: {},
-      isShowUpdateName: false
+      isShowUpdateName: false, // 名字
+      isShowUpdateGender: false, // 性别
+      isShowUpdateBirthdy: false,
+      isUpdatePhotoShow: false,
+      img: null
     }
   },
   computed: {},
@@ -73,12 +126,12 @@ export default {
       }
     },
     onFileChange () {
-      // 头像
-      // 获取文件对象
+      // 获取上传文件
       const file = this.$refs.file.files[0]
-      // 获取blob数据
-      const imgUrl = window.URL.createObjectURL(file)
-      console.log(imgUrl)
+      this.img = window.URL.createObjectURL(file)
+      this.isUpdatePhotoShow = true
+      // 同一张图片，change事件不会触发
+      this.$refs.file.value = ''
     }
   }
 }

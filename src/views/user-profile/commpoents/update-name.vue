@@ -6,6 +6,7 @@
       left-text="取消"
       right-text="完成"
       @click-left="$emit('close')"
+      @click-right="onClickRight"
     />
     <!-- /导航栏 -->
     <div style="padding: 10px">
@@ -23,6 +24,7 @@
 </template>
 
 <script>
+import { updataUserProfile } from '@/api/user'
 export default {
   name: 'update_name',
   data () {
@@ -34,6 +36,29 @@ export default {
     value: {
       type: String,
       required: true
+    }
+  },
+  created () {
+    this.localName = this.value
+  },
+  methods: {
+    async onClickRight () {
+      this.$toast.loading({
+        message: '保存中...',
+        forbidClick: true,
+        duration: 0
+      })
+      try {
+        if (this.localName.trim() === '') return this.$toast('请输入昵称')
+        await updataUserProfile({
+          name: this.localName
+        })
+        this.$emit('input', this.localName)
+        this.$emit('close')
+        this.$toast('更新成功')
+      } catch (err) {
+        this.$toast.fail('更新失败')
+      }
     }
   }
 }
